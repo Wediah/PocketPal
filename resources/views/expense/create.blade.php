@@ -47,6 +47,27 @@
                     </div>
 
                     <div class="mt-4">
+                        <label for="payment" class="block text-sm font-medium leading-6 text-gray-900">Payment
+                            Method</label>
+                        <div class="mt-2">
+                            <select id="payment_id" name="payment_id" class="border border-gray-400 rounded-lg p-2
+                            w-full">
+                                <option value="">Select a payment method</option>
+                                @foreach($allPayments as $payment)
+                                    <option value="{{ $payment->id }}" {{ old('payment_id') == $payment->id ? 'selected'
+                                     : '' }}>{{ $payment->name }}</option>
+                                @endforeach
+                            </select>
+
+                            @error('payment_id')
+                            <p class="text-red-500 text-xs mt-1">
+                                {{ $message }}
+                            </p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
                         <label for="amount" class="block text-sm font-medium leading-6 text-gray-900">Amount</label>
                         <div class="relative mt-2" >
                             <span class="absolute inset-y-0 left-0 flex items-center pl-3">GH₵</span>
@@ -66,6 +87,43 @@
                             </p>
                             @enderror
                         </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <label for="payee" class="block text-sm font-medium leading-6 text-gray-900">Payee</label>
+                        <input class="border border-gray-400 rounded-lg p-2 w-full"
+                               type="text"
+                               name="payee"
+                               id="payee"
+                               placeholder="where you spent the money"
+                               value="{{ old('payee') }}"
+                               autocomplete="payee"
+                               required
+                        >
+
+                        @error('payee')
+                        <p class="text-red-500 text-xs mt-1">
+                            {{ $message }}
+                        </p>
+                        @enderror
+                    </div>
+
+                    <div class="mt-4">
+                        <label for="date" class="block text-sm font-medium leading-6 text-gray-900">Date</label>
+                            <input class="border border-gray-400 rounded-lg p-2 w-full"
+                                   type="date"
+                                   name="date"
+                                   id="date"
+                                   value="{{ old('date') }}"
+                                   autocomplete="date"
+                                   required
+                            >
+
+                            @error('date')
+                            <p class="text-red-500 text-xs mt-1">
+                                {{ $message }}
+                            </p>
+                            @enderror
                     </div>
                 </div>
 

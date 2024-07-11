@@ -31,7 +31,7 @@ class categoryController extends Controller
 
         Category::firstOrCreate($attributes);
 
-        return redirect('/');
+        return redirect('/home');
     }
 
     public function edit(String $id)
@@ -49,7 +49,7 @@ class categoryController extends Controller
             'name' => 'required',
         ]);
 
-        return redirect('/');
+        return redirect('/home');
     }
 
     public function delete(String $id)
@@ -58,6 +58,6 @@ class categoryController extends Controller
 
         $delete->delete();
 
-        return redirect('/');
+        return redirect()->back();
     }
 }

@@ -6,7 +6,8 @@
 
     <!-- SEO Meta Tags -->
     <meta name="description" content="PocketPal is  is a modern finance tracking platform made for students by students
-that changes how students use financial data to track their expenses.">
+        that changes how students use financial data to track their expenses."
+    >
     <meta name="keywords" content="budgeting, expense tracking, savings, financial awareness">
     <meta name="author" content="Wediah Emmanuel">
 
@@ -20,6 +21,8 @@ that changes how students use financial data to track their expenses.">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.5/dist/cdn.min.js"></script>
     <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
@@ -41,24 +44,35 @@ that changes how students use financial data to track their expenses.">
 
 <body style="font-family: Open Sans, sans-serif">
 <section class="px-6 py-4 bg-zinc-200">
-    <nav class="flex justify-between items-center ">
+    <nav class="flex justify-between items-center bg-white px-3 ">
             @auth
-{{--                        <button class="text-xs font-bold uppercase">Welcome, {{ auth()->user()->name }}</button>--}}
             <div class=" flex items-center gap-3">
-                <a href="{{ route('home') }}" class="text-sm font-bold uppercase">Home</a>
-                <a href="{{ route('transactions') }}" class="text-sm font-bold uppercase">Transactions</a>
-                <a href="{{ route('reports') }}" class="text-sm font-bold uppercase">Reports</a>
+                <a href="{{ route('home') }}" class="text-sm font-bold">Dashboard</a>
+                <a href="{{ route('transactions') }}" class="text-sm font-bold">Records</a>
+                <a href="{{ route('reports') }}" class="text-sm font-bold">Analytics</a>
+                <a href="{{ route('budget.create') }}" class="text-sm font-bold">Budget</a>
             </div>
 
-{{--            <a href="{{ route('budget.show') }}" class="text-lg font-bold ">PocketPal</a>--}}
-
             <div class=" flex items-center gap-3">
-                <a href="{{ route('expense.create') }}" class="text-sm font-bold uppercase">Add Expense</a>
-                <a href="{{ route('budget.create') }}" class="text-sm font-bold uppercase">Add Budget</a>
+                <a href="{{ route('expense.create') }}" class="text-sm  rounded-full bg-blue-400
+                py-1 px-3 text-white">+ Record</a>
                 <x-dropdown>
-                    <x-slot name="trigger">
-                        <button class="bg-black rounded-md text-sm font-semibold text-white uppercase
-                        py-2 px-3">Welcome, {{ auth()->user()->name }}</button>
+                    <x-slot name="trigger" >
+                        <div class="flex flex-row gap-1 items-center">
+                            @if(auth()->user()->profile_image)
+                                <img class="h-12 w-12 rounded-full"
+                                     src="{{ asset('storage/profile_images') }}/{{
+                                                auth()->user()->profile_image }}" alt="profile picture"
+                                >
+                            @else
+                                <svg class="h-12 w-12 text-gray-300" viewBox="0 0 24 24" fill="currentColor"
+                                     aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" clip-rule="evenodd" />
+                                </svg>
+                            @endif
+                            <button class=" text-sm font-bold">{{ auth()->user()->name }} </button>
+                                <i class='bx bxs-chevron-down' ></i>
+                        </div>
                     </x-slot>
 
 {{--                    @admin--}}
@@ -66,9 +80,9 @@ that changes how students use financial data to track their expenses.">
 {{--                        Dashboard--}}
 {{--                    </x-dropdown-item>--}}
 {{--                    @endadmin--}}
-                    <x-dropdown-item href="{{ route('category.create') }}">
-                        Add Category
-                    </x-dropdown-item>
+{{--                    <x-dropdown-item href="{{ route('category.create') }}">--}}
+{{--                        Add Category--}}
+{{--                    </x-dropdown-item>--}}
 
                     <x-dropdown-item href="{{ route('profile.index') }}">
                         Profile

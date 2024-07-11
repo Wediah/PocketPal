@@ -28,7 +28,7 @@ class registerController extends Controller
 
         auth()->login($user);
 
-        return redirect('/home/index')->with('success', 'Your account has been created successfully.');
+        return redirect('/home')->with('success', 'Your account has been created successfully.');
     }
 
 //    public function update(Request $request, string $id)

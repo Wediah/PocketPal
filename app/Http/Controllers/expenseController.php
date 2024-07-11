@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Expense;
+use App\Models\paymentMethod;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -13,7 +14,8 @@ class expenseController extends Controller
     public function create()
     {
         $allCategories = Category::all();
-        return view('expense.create', compact('allCategories'));
+        $allPayments = paymentMethod::all();
+        return view('expense.create', compact('allCategories', 'allPayments'));
     }
 
     public function store(Request $request)
@@ -22,6 +24,9 @@ class expenseController extends Controller
             'amount' => 'required',
             'item' => 'required',
             'category_id' => 'required|exists:categories,id',
+            'date' => 'required',
+            'payee' => 'required',
+            'payment_id' => 'required|exists:payment_methods,id',
         ]);
 
         Expense::create([
@@ -29,6 +34,9 @@ class expenseController extends Controller
             'amount' => $validated['amount'],
             'item' => $validated['item'],
             'category_id' => $validated['category_id'],
+            'date' => $validated['date'],
+            'payee' => $validated['payee'],
+            'payment_id' => $validated['payment_id'],
         ]);
 
         return redirect('/home');
@@ -48,6 +56,9 @@ class expenseController extends Controller
             'amount' => 'required',
             'item' => 'required',
             'category_id' => ['required', Rule::exists('categories', 'id')],
+            'date' => 'required',
+            'payee' => 'required',
+            'payment_id' => 'required|exists:payment_methods,id',
         ]);
 
         return redirect('/home');

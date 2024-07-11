@@ -10,9 +10,9 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class homeController extends Controller
 {
@@ -36,24 +36,30 @@ class homeController extends Controller
 
         $budget = $user->budgets;
 
-        $month = $request->input('month', date('m'));
-        $year = $request->input('year', date('Y'));
+        $startDate = Carbon::parse($request->input('start_date', now()));
+        $endDate = Carbon::parse($request->input('end_date', now()));
 
         $totalBudget = Budget::where('user_id', $user->id)
-                        ->whereMonth('created_at', $month)
-                        ->whereYear('created_at',$year)
-                        ->sum('budget');
+            ->where(function ($query) use ($startDate, $endDate) {
+                $query->whereBetween('start_date', [$startDate, $endDate])
+                    ->orWhereBetween('end_date', [$startDate, $endDate])
+                    ->orWhere(function ($query) use ($startDate, $endDate) {
+                        $query->where('start_date', '<=', $startDate)
+                            ->where('end_date', '>=', $endDate);
+                    });
+            })
+            ->sum('budget');
 
         $totalExpenses = Expense::where('user_id', $user->id)
-                        ->whereMonth('created_at', $month)
-                        ->whereYear('created_at',$year)
+                        ->whereBetween('date', [$startDate, $endDate])
                         ->sum('amount');
 
         $percentage = $totalBudget > 0 ? ($totalExpenses / $totalBudget) * 100 : 0;
 
         $balance = $totalBudget - $totalExpenses;
 
-        return view('home.index', compact('user', 'expenses', 'budget', 'month', 'year', 'totalBudget', 'totalExpenses', 'percentage', 'balance'));
+        return view('home.index', compact('user', 'expenses', 'budget', 'startDate', 'endDate', 'totalBudget', 'totalExpenses',
+            'percentage', 'balance'));
     }
 
     public function transactions(Request $request): Factory|Application|View|\Illuminate\Contracts\Foundation\Application
@@ -66,8 +72,8 @@ class homeController extends Controller
         $year = $request->input('year', date('Y'));
 
         $expenses = Expense::where('user_id', $user->id)
-            ->whereMonth('created_at', $month)
-            ->whereYear('created_at',$year)
+            ->whereMonth('date', $month)
+            ->whereYear('date',$year)
             ->get();
 
 

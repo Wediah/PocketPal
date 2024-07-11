@@ -55,7 +55,7 @@
             <tbody>
             @foreach($expenses as $expense)
                 <tr class="flex flex-row justify-between bg-gray-100 rounded-xl p-4 mt-4">
-                    <td class="py-2 px-4">{{ $expense->created_at->format('Y-m-d') }}</td>
+                    <td class="py-2 px-4">{{ $expense->date }}</td>
                     <td class="py-2 px-4">GH₵ {{ $expense->amount }}</td>
                     <td class="py-2 px-4">{{ $expense->item }}</td>
                 </tr>

@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('expenses', function (Blueprint $table) {
-            $table->date('date')->nullable()->after('amount');
+        Schema::table('payment_methods', function (Blueprint $table) {
+            $table->integer('balance')->default(0);
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('expenses', function (Blueprint $table) {
-            $table->dropColumn('date');
+        Schema::table('payment_methods', function (Blueprint $table) {
+            $table->dropColumn('balance');
         });
     }
 };

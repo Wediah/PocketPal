@@ -4,6 +4,7 @@ use App\Http\Controllers\budgetController;
 use App\Http\Controllers\categoryController;
 use App\Http\Controllers\expenseController;
 use App\Http\Controllers\homeController;
+use App\Http\Controllers\paymentMethodController;
 use App\Http\Controllers\profileController;
 use App\Http\Controllers\registerController;
 use App\Http\Controllers\sessionsController;
@@ -48,6 +49,14 @@ Route::get('category/edit/{id}', [CategoryController::class, 'edit'])->name('cat
 Route::post('category/update/{id}', [CategoryController::class, 'update'])->name('category.update')->middleware('auth');
 Route::get('category/delete/{id}', [CategoryController::class, 'destroy'])->name('category.destroy')->middleware('auth');
 Route::get('category', [CategoryController::class, 'create'])->name('category.create')->middleware('auth');
+
+//PAYMENT
+Route::get('payment', [paymentMethodController::class, 'index'])->name('payment.index')->middleware('auth');
+Route::post('payment', [paymentMethodController::class, 'store'])->name('payment.store')->middleware('auth');
+Route::get('payment/edit/{id}', [paymentMethodController::class, 'edit'])->name('payment.edit')->middleware('auth');
+Route::post('payment/update/{id}', [paymentMethodController::class, 'update'])->name('payment.update')->middleware('auth');
+Route::get('payment/delete/{id}', [paymentMethodController::class, 'destroy'])->name('payment.destroy')->middleware('auth');
+Route::get('payment', [paymentMethodController::class, 'create'])->name('payment.create')->middleware('auth');
 
 //EXPENSE
 Route::get('expense', [ExpenseController::class, 'create'])->name('expense.create')->middleware('auth');
