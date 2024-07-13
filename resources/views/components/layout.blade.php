@@ -96,16 +96,18 @@
 
 
             @else
-                <a href="{{ route('help') }}" class="text-xs font-bold uppercase">
+                <a href="{{ route('help') }}" class="text-xs md:font-bold md:uppercase">
                     Help Center
                 </a>
 
-                <a href="/" class="text-lg font-bold ">PocketPal</a>
+                <a href="/" class="md:text-lg text-xs font-bold ">PocketPal</a>
 
                 <div class=" flex items-center gap-3">
-                    <a href="{{ route('login') }}" class="text-xs font-bold uppercase">Login</a>
+                    <a href="{{ route('login') }}" class="text-xs font-bold text-white md:text-black uppercase
+                    md:bg-white bg-blue-400 md:p-0 p-2 rounded-md">Login</a>
 
-                    <a href="{{ route('register') }}" class="bg-black rounded-md text-xs font-semibold text-white uppercase
+                    <a href="{{ route('register') }}" class="bg-black md:block hidden rounded-md text-xs font-semibold
+                    text-white uppercase
                     py-2 px-3">
                         Get Started
                     </a>
