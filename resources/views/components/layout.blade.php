@@ -43,8 +43,8 @@
 </style>
 
 <body style="font-family: Open Sans, sans-serif">
-<section class="px-6 py-4 bg-zinc-200">
-    <nav class="flex justify-between items-center bg-white px-3 ">
+<section class="px-6 py-4 bg-gray-100">
+    <nav class="flex justify-between items-center bg-white p-3 rounded-xl drop-shadow-xl">
             @auth
             <div class=" flex items-center gap-3">
                 <a href="{{ route('home') }}" class="text-sm font-bold">Dashboard</a>
@@ -115,43 +115,47 @@
 
     {{ $slot }}
 
-    <footer id="newsletter" class=" bottom-4 left-6 right-6 bg-blue-900  rounded-xl text-center p-8
-    mt-5">
-        <div class="flex flex-col md:flex-row md:justify-between">
-            <div class="flex flex-col md:flex-row md:gap-14 gap-4 text-left">
-                <div class="flex flex-col gap-1">
-                    <h4 class="text-md font-md text-gray-500">Personal</h4>
-                    <a href="" class="text-sm text-gray-200">Transactions</a>
-                    <a href="" class="text-sm text-gray-200">Reports</a>
-                    <a href="" class="text-sm text-gray-200">Add Expense</a>
+    @auth
+
+    @else
+        <footer id="newsletter" class=" bottom-4 left-6 right-6 bg-blue-900  rounded-xl text-center p-8
+        mt-5">
+            <div class="flex flex-col md:flex-row md:justify-between">
+                <div class="flex flex-col md:flex-row md:gap-14 gap-4 text-left">
+                    <div class="flex flex-col gap-1">
+                        <h4 class="text-md font-md text-gray-500">Personal</h4>
+                        <a href="" class="text-sm text-gray-200">Transactions</a>
+                        <a href="" class="text-sm text-gray-200">Reports</a>
+                        <a href="" class="text-sm text-gray-200">Add Expense</a>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <h4 class="text-md font-md text-gray-500">Info</h4>
+                        <a href="" class="text-sm text-gray-200">+233 204868516</a>
+                        <a href="" class="text-sm text-gray-200">hello@pocketpal.com</a>
+                    </div>
                 </div>
-                <div class="flex flex-col gap-1">
-                    <h4 class="text-md font-md text-gray-500">Info</h4>
-                    <a href="" class="text-sm text-gray-200">+233 204868516</a>
-                    <a href="" class="text-sm text-gray-200">hello@pocketpal.com</a>
+
+                <div class="flex flex-col gap-1 md:text-right text-left mt-4 md:mt-0">
+                    @auth
+                        <h4 class="text-md font-md text-gray-500">Address</h4>
+                    @else
+                        <a href="" class="bg-blue-400 rounded-md text-xs text-center font-semibold text-white uppercase py-2
+                         px-3">
+                            Get Started
+                        </a>
+                    @endauth
+                    <a href="{{ route('register') }}" class="text-sm text-gray-200">23rd  Akwesi Ampim Rd. Accra</a>
+                    <h4 class="text-sm text-gray-200">Greater Accra, Ghana</h4>
                 </div>
+
+
             </div>
-
-            <div class="flex flex-col gap-1 md:text-right text-left mt-4 md:mt-0">
-                @auth
-                    <h4 class="text-md font-md text-gray-500">Address</h4>
-                @else
-                    <a href="" class="bg-blue-400 rounded-md text-xs text-center font-semibold text-white uppercase py-2
-                     px-3">
-                        Get Started
-                    </a>
-                @endauth
-                <a href="{{ route('register') }}" class="text-sm text-gray-200">23rd  Akwesi Ampim Rd. Accra</a>
-                <h4 class="text-sm text-gray-200">Greater Accra, Ghana</h4>
+            <div class="flex md:flex-row flex-col justify-between mt-2">
+                <h3 class="text-sm text-gray-500">2024 - Copyright</h3>
+                <a href="{{ route('privacy') }}" class="text-sm text-gray-500">Privacy</a>
             </div>
-
-
-        </div>
-        <div class="flex md:flex-row flex-col justify-between mt-2">
-            <h3 class="text-sm text-gray-500">2024 - Copyright</h3>
-            <a href="{{ route('privacy') }}" class="text-sm text-gray-500">Privacy</a>
-        </div>
-    </footer>
+        </footer>
+    @endauth
 </section>
 
 

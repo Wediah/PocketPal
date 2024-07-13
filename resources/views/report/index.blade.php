@@ -34,7 +34,7 @@
             <canvas id="expensesChart" width="400" height="200" class="mt-4"></canvas>
         </div>
 
-        <div class="bg-gray-100 rounded-xl p-8 mt-8">
+        <div class="bg-white rounded-xl p-8 mt-8">
             <h1 class="text-2xl md:text-4xl font-bold">Most Spent</h1>
             @foreach($expenses as $expense)
                 <div class="flex flex-row justify-between p-4 mt-4">

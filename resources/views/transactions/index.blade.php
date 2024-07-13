@@ -1,6 +1,5 @@
 <x-layout>
-<section class="">
-    <h1 class="text-2xl mt-4 text-center font-bold mb-4">Your Expenses</h1>
+<section class="my-8">
 
     <form method="GET" action="{{ route('transactions') }}" class="mb-6">
         <div class="flex flex-col md:flex-row bg-blue-900 p-12  rounded-xl justify-center text-white">
@@ -44,20 +43,23 @@
     @if($expenses->isEmpty())
         <p class="text-gray-600 text-center p-4">No expenses found for the selected period.</p>
     @else
-        <table class="min-w-full bg-white">
+        <table class="min-w-full">
             <thead>
             <tr class="flex flex-row justify-between  rounded-xl p-4 mt-4">
                 <th class="py-2 px-4">Date</th>
                 <th class="py-2 px-4">Amount</th>
                 <th class="py-2 px-4">Item</th>
+                <th class="py-2 px-4">Payee</th>
+
             </tr>
             </thead>
             <tbody>
             @foreach($expenses as $expense)
-                <tr class="flex flex-row justify-between bg-gray-100 rounded-xl p-4 mt-4">
+                <tr class="flex flex-row justify-between bg-white rounded-xl p-4 mt-4">
                     <td class="py-2 px-4">{{ $expense->date }}</td>
                     <td class="py-2 px-4">GH₵ {{ $expense->amount }}</td>
                     <td class="py-2 px-4">{{ $expense->item }}</td>
+                    <td class="py-2 px-4">{{ $expense->payee }}</td>
                 </tr>
             @endforeach
             </tbody>
