@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class paymentMethodController extends Controller
 {
@@ -23,14 +24,17 @@ class paymentMethodController extends Controller
         return view('payment.index', compact('allPayments'));
     }
 
-    public function store()
+    public function store(Request $request)
     {
-        $attributes = request()->validate([
-            'slug' => SlugService::createSlug(paymentMethod::class, 'slug', request('name')),
+        $request->validate([
             'name' => 'required',
         ]);
 
-        paymentMethod::firstOrCreate($attributes);
+        paymentMethod::firstOrCreate([
+            'user_id' => auth()->id(),
+            'slug' => SlugService::createSlug(paymentMethod::class, 'slug', request('name')),
+            'name' => request('name'),
+        ]);
 
         return redirect('/home');
     }
@@ -60,5 +64,26 @@ class paymentMethodController extends Controller
         $delete->delete();
 
         return redirect()->back();
+    }
+
+    public function record(Request $request, string $id)
+    {
+        $user = Auth::user();
+        $account = paymentMethod::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'balance' => 'required|numeric|min:0',
+        ]);
+
+        $account->balance += $validatedData['balance'];
+        $account->save();
+
+        return redirect('/home');
+    }
+
+    public function recording()
+    {
+        $user = Auth::user();
+        return view('payment.record', compact('user'));
     }
 }

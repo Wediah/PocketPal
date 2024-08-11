@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Budget;
 use App\Models\Category;
 use App\Models\Expense;
+use App\Models\paymentMethod;
 use App\Models\User;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -26,10 +27,12 @@ class homeController extends Controller
         return view('help');
     }
 
-    public function home(Request $request): Factory|Application|View|\Illuminate\Contracts\Foundation\Application
+    public function home(Request $request):
+    Factory|Application|View|\Illuminate\Contracts\Foundation\Application
     {
         $user = Auth::user();
         $expenses = $user->expenses()
+            ->with('payments')
             ->latest()
             ->take(5)
             ->get();
@@ -51,15 +54,30 @@ class homeController extends Controller
             ->sum('budget');
 
         $totalExpenses = Expense::where('user_id', $user->id)
-                        ->whereBetween('date', [$startDate, $endDate])
                         ->sum('amount');
 
         $percentage = $totalBudget > 0 ? ($totalExpenses / $totalBudget) * 100 : 0;
 
         $balance = $totalBudget - $totalExpenses;
 
+        $income = paymentMethod::where('user_id', $user->id)
+            ->sum('balance');
+
+        $totalBalance = $income-$totalExpenses;
+
+        $topExpenses = $user->expenses()
+            ->select('category_id', DB::raw('SUM(amount) as total_amount'))
+            ->groupBy('category_id')
+            ->with('category')
+            ->orderBy('total_amount', 'desc')
+            ->get();
+
+        $payments = paymentMethod::where('user_id', $user->id)
+            ->get();
+
+
         return view('home.index', compact('user', 'expenses', 'budget', 'startDate', 'endDate', 'totalBudget', 'totalExpenses',
-            'percentage', 'balance'));
+            'percentage', 'balance', 'income', 'totalBalance', 'topExpenses', 'payments'));
     }
 
     public function transactions(Request $request): Factory|Application|View|\Illuminate\Contracts\Foundation\Application
@@ -72,6 +90,7 @@ class homeController extends Controller
         $year = $request->input('year', date('Y'));
 
         $expenses = Expense::where('user_id', $user->id)
+            ->with('payments')
             ->whereMonth('date', $month)
             ->whereYear('date',$year)
             ->get();

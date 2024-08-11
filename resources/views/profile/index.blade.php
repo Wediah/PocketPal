@@ -1,19 +1,5 @@
 <x-layout>
-    <section class="px-28 py-8">
-        <!--
-          This example requires some changes to your config:
-
-          ```
-          // tailwind.config.js
-          module.exports = {
-            // ...
-            plugins: [
-              // ...
-              require('@tailwindcss/forms'),
-            ],
-          }
-          ```
-        -->
+    <section class="p-4 sm:ml-64 mt-14">
         <form action="{{ route('user.update', $user->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PATCH')

@@ -23,7 +23,7 @@ class Expense extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function paymentMethod(): BelongsTo
+    public function payments(): BelongsTo
     {
         return $this->belongsTo(PaymentMethod::class);
     }

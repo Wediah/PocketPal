@@ -7,6 +7,7 @@ use App\Models\Expense;
 use App\Models\paymentMethod;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class expenseController extends Controller
@@ -14,7 +15,10 @@ class expenseController extends Controller
     public function create()
     {
         $allCategories = Category::all();
-        $allPayments = paymentMethod::all();
+
+        $user = Auth::user();
+        $allPayments = $user->payments;
+//        $allPayments = paymentMethod::all();
         return view('expense.create', compact('allCategories', 'allPayments'));
     }
 
@@ -28,6 +32,13 @@ class expenseController extends Controller
             'payee' => 'required',
             'payment_id' => 'required|exists:payment_methods,id',
         ]);
+
+        $paymentMethod = paymentMethod::where('id', $validated['payment_id'])
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
+        $paymentMethod->balance -= $validated['amount'];
+        $paymentMethod->save();
 
         Expense::create([
             'user_id' => auth()->id(),

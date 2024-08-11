@@ -1,8 +1,8 @@
 <x-layout>
-    <section class="px-6 py-8">
+    <section class="px-6 py-8 h-screen">
         <main class="max-w-lg p-6 mx-auto my-14 mt-10">
-            <h1 class="text-center font-bold text-xl">Category</h1>
-            <p class="text-sm font-md text-center">Create a new category</p>
+            <h1 class="text-center font-bold text-xl">Account</h1>
+            <p class="text-sm font-md text-center">Create a new account</p>
             <form method="POST" action="{{ route('payment.store') }}" class="mt-10 space-y-6">
                 @csrf
 

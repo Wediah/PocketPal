@@ -1,67 +1,84 @@
 <x-layout>
-    <section class="my-8">
-        <!-- Form to select month and year -->
-        <div class="rounded-xl bg-blue-900 p-12 text-white relative mt-4">
-            <div class="flex flex-row flex-row-reverse justify-between">
-                <form method="GET" action="{{ route('home') }}" class="flex flex-row gap-1 items-end">
-
-                    <div class="flex flex-col gap-2">
-                        <div class=" gap-1">
-                            <label for="start_date">Start Date:</label>
-                            <input type="date" class="bg-blue-400 rounded-md p-1" id="start_date" name="start_date"
-                                   value="{{ request('start_date', $startDate->toDateString()) }}">
-                        </div>
-
-                        <div class="gap-1">
-                            <label for="end_date">End Date:</label>
-                            <input type="date" class="bg-blue-400 rounded-md p-1" id="end_date" name="end_date"
-                                   value="{{ request
-                        ('end_date',
-                        $endDate->toDateString()) }}">
-                        </div>
-                    </div>
-
-
-                    <button class="bg-blue-400 text-white font-semibold p-1 rounded-md" type="submit">Filter</button>
-                </form>
-
-                <p>{{ number_format($percentage, 2) }}% Spent</p>
-
-                <div class="">
-                    <div class="flex flex-col gap-2">
-                        <p>Total Budget</p>
-                        <p>GH₵ {{ $totalBudget }}</p>
+    <div class="p-4 sm:ml-64 md:mt-14">
+        <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
+            <h3 class="text-2xl md:text-xl lg:text-3xl font-bold ">Overview</h3>
+            <div class="md:grid md:grid-cols-2 flex flex-col gap-4 my-4 bg-gray-50 p-4 rounded-xl">
+                <div class="flex flex-row justify-between items-center bg-white md:p-6 p-4 rounded-xl">
+                        <span class="text-green-500 bg-gray-100 p-6 rounded-full text-2xl">
+                            <i class='bx bx-down-arrow-alt'></i>
+                        </span>
+                    <div class="flex flex-col gap-1 text-left">
+                        <p class="font-semibold text-lg">Income</p>
+                        <p class="font-bold text-lg">GH₵ {{ number_format($income, 2) }}</p>
                     </div>
                 </div>
-            </div>
-            <div class="w-full bg-gray-200 rounded-full h-6 mt-4">
-                <div class="bg-blue-600 h-6 rounded-full" style="width: {{ $percentage }}%"></div>
-            </div>
-
-            <div class="flex justify-center">
-                <div class="bg-blue-400 mt-6 rounded-xl absolute p-8 px-36 flex flex-row justify-between w-11/12
-            items-center">
-                    <div class="flex flex-col gap-2">
-                        <p class="font-semibold text-lg">Balance</p>
-                        <p class="font-bold text-lg">GH₵ {{ $balance }}</p>
-                    </div>
-                    <div
-                        class="inline-block h-[250px] min-h-[1em] w-0.5 self-stretch bg-white"></div>
-                    <div class="flex flex-col gap-2 text-center">
+                <div class="flex flex-row justify-between items-center bg-white md:p-6 p-4 rounded-xl">
+                        <span class="text-red-500 bg-gray-100 p-6 rounded-full text-2xl">
+                            <i class='bx bx-up-arrow-alt'></i>
+                        </span>
+                    <div class="flex flex-col gap-1 text-left">
                         <p class="font-semibold text-lg">Expense</p>
-                        <p class="font-bold text-lg">GH₵ {{ $totalExpenses }}</p>
+                        <p class="font-bold text-lg">GH₵ {{ number_format($totalExpenses, 2) }}</p>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="mt-32" >
-            <h3 class="text-4xl md:text-xl lg:text-3xl font-bold ">Recent Expenses</h3>
-            @foreach ($expenses as $expense)
-                <div class="flex flex-row justify-between bg-white rounded-xl p-4 mt-4">
-                    <p class="font-bold">{{ $expense->item }}</p>
-                    <p class="text-red-400">GH₵ {{ $expense->amount }}</p>
+            <div class="gap-4 my-4 bg-gray-50 p-4 rounded-xl">
+                <div class="flex justify-between my-3 ">
+                    <h3 class="text-2xl md:text-xl lg:text-3xl font-bold ">Accounts</h3>
+                    <a href="{{ route('payment.recording') }}" class="flex flex-row  items-center font-semibold
+                text-blue-400">manage accounts <i class='bx
+                bx-chevron-right'
+                        ></i></a>
                 </div>
-            @endforeach
+
+                <div class="flex flex-row overflow-scroll gap-6 items-center rounded-xl">
+                    @foreach($payments as $payment)
+                        <div class="flex flex-row gap-1 text-center bg-white p-8 rounded-xl items-center">
+                            <div>
+                                 <span class="text-green-500 p-2 text-2xl">
+                                     <i class='bx bxs-bank'></i>
+                                </span>
+                            </div>
+                            <p class="font-semibold text-lg">{{ $payment->name }}</p>
+                            <p class="font-bold text-lg ml-12">GH₵ {{ number_format($payment->balance, 2) }}</p>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+            <div class="my-4 bg-gray-50 p-4 rounded-xl">
+                <div class="flex justify-between">
+                    <h3 class="text-2xl md:text-xl lg:text-3xl font-bold my-3">Top Expenses</h3>
+                    <a href="{{ route('reports') }}" class="flex flex-row  items-center font-semibold text-blue-400">see
+                        more <i class='bx
+                    bx-chevron-right'
+                        ></i></a>
+                </div>
+
+                <div class="flex flex-row overflow-scroll gap-6 pt-4">
+                    @foreach($topExpenses as $expense)
+                        <div class="flex flex-col gap-2 bg-white p-8 rounded-md justify-center items-center">
+                            <img class="h-20 w-20 "
+                                 src="{{ asset('storage/images') }}/{{ $expense->category->image }}" alt="profile picture"
+                            >
+                            <p class="font-semibold text-sm whitespace-nowrap">{{ $expense->category->name }}</p>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+            <div class="my-4 bg-gray-50 p-4 rounded-xl">
+                <h3 class="text-2xl md:text-xl lg:text-3xl font-bold my-3">Recent Expenses</h3>
+                @foreach ($expenses as $expense)
+                    <div class="flex flex-row justify-between bg-white rounded-xl p-4 mt-4 items-center">
+                        <div class="flex flex-row-reverse items-center gap-2">
+                            <p class="font-semibold text-xl">{{ $expense->item }}</p>
+                            <img class="h-12 w-12 bg-gray-100 p-1 rounded-md"
+                                 src="{{ asset('storage/images') }}/{{ $expense->category->image }}" alt="profile picture"
+                            >
+                        </div>
+                        <p class="text-red-400 font-semibold text-lg">GH₵ {{ number_format($expense->amount, 2) }}</p>
+                    </div>
+                @endforeach
+            </div>
         </div>
-    </section>
+    </div>
 </x-layout>

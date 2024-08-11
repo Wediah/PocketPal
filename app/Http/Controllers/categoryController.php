@@ -22,14 +22,24 @@ class categoryController extends Controller
         return view('category.index', compact('allCategories'));
     }
 
-    public function store()
+    public function store(Request $request)
     {
-        $attributes = request()->validate([
-            'slug' => SlugService::createSlug(category::class, 'slug', request('name')),
+        $request->validate([
             'name' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        Category::firstOrCreate($attributes);
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $filename = uniqid() . '.' . $image->getClientOriginalExtension();
+            $image->storeAs('images', $filename);
+        }
+
+        Category::firstOrCreate([
+            'slug' => SlugService::createSlug(category::class, 'slug', request('name')),
+            'name' => $request->input('name'),
+            'image' => $filename ?? null,
+        ]);
 
         return redirect('/home');
     }

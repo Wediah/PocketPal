@@ -1,9 +1,10 @@
 <x-layout>
-    <section class="px-6 py-8">
+    <section class="p-4 sm:ml-64">
         <main class="max-w-lg p-6 mx-auto my-14 mt-10">
             <h1 class="text-center font-bold text-xl">Category</h1>
             <p class="text-sm font-md text-center">Create a new category</p>
-            <form method="POST" action="{{ route('category.store') }}" class="mt-10 space-y-6">
+            <form method="POST" action="{{ route('category.store') }}" enctype="multipart/form-data" class="mt-10
+                  space-y-6">
                 @csrf
 
                 <div>
@@ -20,6 +21,26 @@
                         >
 
                         @error('name')
+                        <p class="text-red-500 text-xs mt-1">
+                            {{ $message }}
+                        </p>
+                        @enderror
+                    </div>
+                </div>
+
+                <div>
+                    <label for="image" class="block text-sm font-medium leading-6 text-gray-900">Image</label>
+                    <div class="mt-2">
+                        <input class="border border-gray-400 rounded-lg p-2 w-full"
+                               type="file"
+                               name="image"
+                               id="image"
+                               value="{{ old('image') }}"
+                               autocomplete="name"
+                               required
+                        >
+
+                        @error('image')
                         <p class="text-red-500 text-xs mt-1">
                             {{ $message }}
                         </p>
