@@ -1,5 +1,5 @@
 <x-layout>
-    <section class="mt-8 h-screen">
+    <section class="p-4 sm:ml-64 md:mt-14">
         <div class="container mx-auto">
             <div class="flex justify-between ">
                 <h3 class="text-2xl md:text-xl lg:text-3xl font-bold ">Manage Account</h3>

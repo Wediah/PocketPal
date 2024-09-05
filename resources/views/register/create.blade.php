@@ -5,7 +5,6 @@
             <p class="text-sm font-md text-center">Enter your credentials to sign up for this app</p>
             <form method="POST" action="{{ route('register.store') }}" class="mt-10 space-y-6">
                 @csrf
-
                 <div>
                     <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Name</label>
                     <div class="mt-2">
